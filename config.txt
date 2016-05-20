@@ -1,0 +1,2 @@
+class = afficheurImpl.AfficheurImpl
+desc = Afficheur simple
