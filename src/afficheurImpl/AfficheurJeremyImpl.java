@@ -2,9 +2,9 @@ package afficheurImpl;
 
 import afficheur.Afficheur;
 
-public class AfficheurImpl implements Afficheur {
+public class AfficheurJeremyImpl implements Afficheur {
 
-	public AfficheurImpl() {
+	public AfficheurJeremyImpl() {
 
 	}
 

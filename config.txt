@@ -1,2 +1,8 @@
-class = afficheurImpl.AfficheurImpl
-desc = Afficheur simple
+class = afficheurImpl.AfficheurJeremyImpl
+desc = Afficheur Jeremy
+*
+class = afficheurImpl.AfficheurHugoImpl
+desc = Afficheur Hugo
+*
+class = afficheurImpl.AfficheurOlivierImpl
+desc = Afficheur Olivier

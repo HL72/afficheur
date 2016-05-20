@@ -1,6 +1,6 @@
 package application;
 
-import java.util.Set;
+import java.util.List;
 
 import afficheur.Afficheur;
 import plateforme.Descripteur;
@@ -12,15 +12,16 @@ public class Application {
 	private Afficheur afficheur;
 	
 	public Application() throws Exception {
-	    String name = "Afficheur simple";
-		Set<Descripteur> descripteurs = p.getDescripteurs();
+	    String name = "Afficheur Olivier";
+		List<Descripteur> descripteurs = p.getDescripteurs();
+		System.out.println("Liste des afficheurs disponibles :");
 		for (Descripteur descripteur : descripteurs) {
 			System.out.println(descripteur);
 			if (descripteur.getNom().equals(name)) {
 				afficheur = p.getAfficheur(descripteur);
 			}
 		}
-		String s = "coucou";
+		String s = "\nCoucou";
 		afficher(s);
 	}
 
@@ -30,7 +31,7 @@ public class Application {
 	
 	public static void main(String[] args) throws Exception {
 
-		Application a = new Application();
+		new Application();
 
 	}
 }

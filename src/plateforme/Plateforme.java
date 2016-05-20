@@ -1,60 +1,65 @@
 package plateforme;
 
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import afficheur.Afficheur;
 
 public class Plateforme {
-	
-	private static Map<Descripteur, Class<?>> afficheurs = new HashMap<Descripteur, Class<?>>();
-	
+
+	private static List<Descripteur> afficheurs = new ArrayList<Descripteur>();
+
 	private static Plateforme instance = null;
 
 	private Plateforme() throws Exception {
 		loadConfig("config.txt");
 	}
 
-
 	public static Plateforme getInstance() throws Exception {
-		
-		if(instance == null){
+
+		if (instance == null) {
 			instance = new Plateforme();
 		}
 		return instance;
 	}
-	
+
 	public Afficheur getAfficheur(Descripteur desc) throws Exception {
-		Class<?> afficheur = afficheurs.get(desc);
-		return (Afficheur) Class.forName(afficheur.getName()).newInstance();
+		String classNom = desc.getClasseNom();
+		return (Afficheur) Class.forName(classNom).newInstance();
 	}
-	
-	public Set<Descripteur> getDescripteurs() {
-		return afficheurs.keySet();
+
+	public List<Descripteur> getDescripteurs() {
+		return afficheurs;
 	}
-	
+
 	private static void loadConfig(String filename) throws Exception {
-		Properties p = new Properties();
-		p.load(new FileReader(filename));
-		Class<?> classAfficheur = null;
-		Descripteur descAfficheur = null;
-		for (Object key : p.keySet()) {
-			if (key.equals("class")) {
-				classAfficheur = Class.forName((String) p.get(key));
+		char[] buffer = new char[500];
+		FileReader fr = new FileReader(filename);
+		fr.read(buffer);
+		String bufferString = String.valueOf(buffer);
+		String[] afficheursTxt = bufferString.split("\\*");
+
+		for (int i = 0; i < afficheursTxt.length; i++) {
+			Properties p = new Properties();
+			p.load(new StringReader(afficheursTxt[i]));
+			String classNom = null;
+			String desc = null;
+			for (Object key : p.keySet()) {
+				if (key.equals("class")) {
+					classNom = (String) p.get(key);
+				} else {
+					desc = (String) p.get(key);
+				}
+				if (classNom != null && desc != null) {
+					afficheurs.add(new Descripteur(desc, classNom));
+					classNom = null;
+					desc = null;
+				}
 			}
-			else {
-				descAfficheur = new Descripteur((String) p.get(key));
-			}
-			if(descAfficheur != null && classAfficheur != null){
-				afficheurs.put(descAfficheur, classAfficheur);
-				descAfficheur = null;
-				classAfficheur = null;
-			}
-			
 		}
 	}
-	
+
 }
